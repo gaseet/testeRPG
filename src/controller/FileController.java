@@ -27,7 +27,7 @@ public class FileController {
         System.out.println("5. Rogue");
     }
 
-    private String getClassNumber(int classChoice) {
+    private String getClassFromNumber(int classChoice) {
         switch (classChoice) {
             case 1:
                 return "Mage";
@@ -192,7 +192,7 @@ public class FileController {
     
         classesMenu();
         int classChoice = view.getClassChoice();
-        String className = getClassNumber(classChoice);
+        String className = getClassFromNumber(classChoice);
     
         // Get the RPGClass instance based on the selected class name
         RPGClass rpgClass = fileModel.classes.get(className);
@@ -284,7 +284,7 @@ public class FileController {
         
         classesMenu();
         int classChoice = view.getClassChoice();
-        String className = getClassNumber(classChoice);
+        String className = getClassFromNumber(classChoice);
     
         RPGClass rpgClass = fileModel.classes.get(className);
         if (rpgClass != null) {
