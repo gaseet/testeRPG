@@ -123,6 +123,7 @@ public class FileController {
 
     private void selectUserWhenAdding(String username) {
         currentUser = userModel.getUser(username);
+        userModel.setCurrentUser(currentUser);
         if (currentUser != null) {
             view.displayMessage("User " + username + " selected.");
         } else {
@@ -146,7 +147,7 @@ public class FileController {
         boolean deleted = userModel.deleteUser(username);
         if (deleted) {
             view.displayMessage("User deleted successfully.");
-            currentUser = null; // Reset currentUser after deletion
+            currentUser = null;
         } else {
             view.displayMessage("User not found or failed to delete.");
         }
@@ -155,8 +156,10 @@ public class FileController {
     private void selectUser() {
         String username = view.getUserInput("Enter username: ");
         username = capitalizeWords(username);
-        currentUser = userModel.getUser(username);
-        if (currentUser != null) {
+        User aux;
+        aux = userModel.getUser(username);
+        if (aux != null) {
+            currentUser = aux;
             userModel.setCurrentUser(currentUser);
             view.displayMessage("User " + username + " selected.");
         } else {

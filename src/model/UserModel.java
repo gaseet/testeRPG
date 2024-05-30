@@ -22,6 +22,7 @@ public class UserModel {
         User user = new User(username);
         users.put(username, user);
         createUserDirectory(user);
+        currentUser = user;
         return true;
     }
 
