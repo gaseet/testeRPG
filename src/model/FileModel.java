@@ -33,6 +33,21 @@ public class FileModel {
         }
     }
 
+    public String readCharacterNameFromFile(User user, String fileName) throws IOException {
+        fileName = fileName.trim();
+        File userDir = user.getUserDirectory(); // Use user's directory
+        File file = new File(userDir, fileName);
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line = reader.readLine();
+            if (line != null && line.startsWith("Character Name: ")) {
+                return line.substring("Character Name: ".length());
+            }
+        } catch (IOException e) {
+            e.printStackTrace(); // Print stack trace for debugging
+        }
+        return null; // Return null if the data is invalid or not found
+    }
+
     public RPGClass readFromFile(User user, String fileName, FileView view) throws IOException {
         fileName = fileName.trim();
         File userDir = user.getUserDirectory(); // Use user's directory

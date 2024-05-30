@@ -254,8 +254,25 @@ public class FileController {
                 view.displayMessage("Editing operation canceled.");
                 return;
             }
-        
-            String characterName = view.getUserInput("Enter the character's name: ");
+
+            String characterName;
+
+            String changeName = view.getUserInput("Would you like to change the character's name? (YES/NO): ");
+            if (changeName.equals("YES")) {
+                characterName = view.getUserInput("Enter the character's new name: ");
+            } else {
+                try {
+                    characterName = fileModel.readCharacterNameFromFile(currentUser, fileName);
+                    if (characterName == null) {
+                        view.displayMessage("Error reading character name from file.");
+                        return;
+                    }
+                } catch (IOException e) {
+                    view.displayMessage("An error occurred while reading the character name from file.");
+                    e.printStackTrace();
+                    return;
+                }
+            }
             
             classesMenu();
             int classChoice = view.getClassChoice();
@@ -279,8 +296,6 @@ public class FileController {
             return;
         }
     }
-    
-    
     
     private void deleteInformation() {
         User currentUser = userController.getCurrentUser();
