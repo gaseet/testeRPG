@@ -11,7 +11,6 @@ public class FileController {
     private UserController userController;
     private FileModel fileModel;
     private FileView view;
-    private User currentUser;
 
     public FileController(UserController userController, FileModel fileModel, FileView view) {
         this.userController = userController;
@@ -121,7 +120,7 @@ public class FileController {
     }
 
     private void selectUserWhenAdding(String username) {
-        currentUser = userController.getUser(username);
+        User currentUser = userController.getUser(username);
         userController.setCurrentUser(currentUser);
         if (currentUser != null) {
             view.displayMessage("User " + username + " selected.");
@@ -131,6 +130,7 @@ public class FileController {
     }
 
     private void deleteSelectedUser() {
+        User currentUser = userController.getCurrentUser();
         if (currentUser == null) {
             view.displayMessage("No user selected.");
             return;
@@ -146,7 +146,7 @@ public class FileController {
         boolean deleted = userController.deleteUser(username);
         if (deleted) {
             view.displayMessage("User deleted successfully.");
-            currentUser = null;
+            userController.setCurrentUser(null);
         } else {
             view.displayMessage("User not found or failed to delete.");
         }
@@ -155,11 +155,9 @@ public class FileController {
     private void selectUser() {
         String username = view.getUserInput("Enter username: ");
         username = capitalizeWords(username);
-        User aux;
-        aux = userController.getUser(username);
-        if (aux != null) {
-            currentUser = aux;
-            userController.setCurrentUser(currentUser);
+        User currentUser = userController.getUser(username); // Get the current user from the controller
+        if (currentUser != null) {
+            userController.setCurrentUser(currentUser); // Set the current user in the controller
             view.displayMessage("User " + username + " selected.");
         } else {
             view.displayMessage("User not found.");
@@ -176,6 +174,7 @@ public class FileController {
     }
 
     private void saveInformation() {
+        User currentUser = userController.getCurrentUser();
         if (currentUser == null) {
             view.displayMessage("No user selected.");
             return;
@@ -213,6 +212,7 @@ public class FileController {
     }        
 
     private void readInformation() {
+        User currentUser = userController.getCurrentUser();
         if (currentUser == null) {
             view.displayMessage("No user selected.");
             return;
@@ -238,6 +238,7 @@ public class FileController {
     }
 
     private void editInformation() {
+        User currentUser = userController.getCurrentUser();
         if (currentUser == null) {
             view.displayMessage("No user selected.");
             return;
@@ -282,6 +283,7 @@ public class FileController {
     
     
     private void deleteInformation() {
+        User currentUser = userController.getCurrentUser();
         if (currentUser == null) {
             view.displayMessage("No user selected.");
             return;
@@ -310,6 +312,7 @@ public class FileController {
     }
 
     private void showUserFiles() {
+        User currentUser = userController.getCurrentUser();
         if (currentUser == null) {
             view.displayMessage("No user selected.");
             return;
@@ -327,6 +330,7 @@ public class FileController {
     }
 
     private void editUser() {
+        User currentUser = userController.getCurrentUser();
         if (currentUser == null) {
             view.displayMessage("No user selected.");
             return;
