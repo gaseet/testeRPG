@@ -260,6 +260,10 @@ public class FileController {
             String changeName = view.getUserInput("Would you like to change the character's name? (YES/NO): ");
             if (changeName.equals("YES")) {
                 characterName = view.getUserInput("Enter the character's new name: ");
+                if (characterName == null) {
+                    view.displayMessage("Error reading character name from file.");
+                    return;
+                }
             } else {
                 try {
                     characterName = fileModel.readCharacterNameFromFile(currentUser, fileName);
