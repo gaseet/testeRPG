@@ -1,8 +1,5 @@
 package model.RPGClasses;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
+import java.io.*;
 
 import model.RPGClass;
 import view.FileView;

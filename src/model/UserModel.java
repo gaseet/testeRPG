@@ -1,4 +1,3 @@
-// UserModel.java
 package model;
 
 import java.io.File;
@@ -31,7 +30,11 @@ public class UserModel {
         if (user != null) {
             File userDir = user.getUserDirectory();
             if (userDir.exists() && userDir.isDirectory()) {
-                deleteDirectory(userDir);
+                try {
+                    deleteDirectory(userDir);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
             users.remove(username);
             return true;
@@ -70,7 +73,7 @@ public class UserModel {
         }
     }
 
-    private void deleteDirectory(File directory) {
+    private void deleteDirectory(File directory) throws IOException {
         File[] files = directory.listFiles();
         if (files != null) {
             for (File file : files) {
@@ -81,6 +84,8 @@ public class UserModel {
                 }
             }
         }
-        directory.delete();
+        if (!directory.delete()) {
+            throw new IOException("Failed to delete directory: " + directory.getAbsolutePath());
+        }
     }
 }
