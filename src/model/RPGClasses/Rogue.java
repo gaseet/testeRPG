@@ -51,6 +51,9 @@ public class Rogue extends RPGClass{
             if (line.startsWith("Stealth Technique: ")) {
                 stealthTechnique = line.substring("Stealth Technique: ".length());
             }
+            if (stealthTechnique != null) { // VERY IMPORTANT TO BREAK WHEN FOUND ALL
+                break;
+            }
         }
     }
 

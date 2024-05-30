@@ -50,6 +50,9 @@ public class Paladin extends RPGClass {
             if (line.startsWith("Oath: ")) {
                 oath = line.substring("Oath: ".length());
             }
+            if (oath != null) { // VERY IMPORTANT TO BREAK WHEN FOUND ALL
+                break;
+            }
         }
     }
 

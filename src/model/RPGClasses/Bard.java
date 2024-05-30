@@ -50,6 +50,9 @@ public class Bard extends RPGClass {
             if (line.startsWith("Instrument: ")) {
                 instrument = line.substring("Instrument: ".length());
             }
+            if (instrument != null) { // VERY IMPORTANT TO BREAK WHEN FOUND ALL
+                break;
+            }
         }
     }
 

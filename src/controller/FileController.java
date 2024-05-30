@@ -6,6 +6,7 @@ import model.FileModel;
 import model.RPGClass;
 import model.RPGRace;
 import model.User;
+import model.CharacterData;
 import view.FileView;
 
 public class FileController {
@@ -54,6 +55,7 @@ public class FileController {
     private void racesMenu() {
         System.out.println("Choose race: ");
         System.out.println("1. Elf");
+        System.out.println("2. Dwarf");
     }
 
     private String getRaceFromNumber() {
@@ -64,6 +66,8 @@ public class FileController {
             switch (classChoice) {
                 case 1:
                     return "Elf";
+                case 2:
+                    return "Dwarf";
                 default:
                     view.displayMessage("Invalid number.");
                     classChoice = -1;
@@ -101,7 +105,7 @@ public class FileController {
                     readInformation();
                     break;
                 case 9:
-                   // editInformation();
+                    editInformation();
                     break;
                 case 10:
                     deleteInformation();
@@ -218,13 +222,14 @@ public class FileController {
         String characterName = view.getUserInput("Enter the character's name: ");
 
         String raceName = getRaceFromNumber();
-        // Debug statement to verify the selected class
+
+        // Debug statement to verify the selected race
         view.displayMessage("Selected race: " + raceName);
 
         RPGRace rpgRace = fileModel.races.get(raceName);
     
         // Debug statement to verify the retrieved RPGRace instance
-        System.out.println("RPGRace instance: " + rpgRace);
+        //System.out.println("RPGRace instance: " + rpgRace);
 
         if (rpgRace != null) {
             rpgRace.askQuestions(view);
@@ -234,6 +239,7 @@ public class FileController {
         }
 
         String className = getClassFromNumber();
+
         // Debug statement to verify the selected class
         view.displayMessage("Selected class: " + className);
     
@@ -241,7 +247,7 @@ public class FileController {
         RPGClass rpgClass = fileModel.classes.get(className);
 
         // Debug statement to verify the retrieved RPGClass instance
-        System.out.println("RPGClass instance: " + rpgClass);
+        //System.out.println("RPGClass instance: " + rpgClass);
     
         if (rpgClass != null) {
             rpgClass.askQuestions(view);
@@ -265,15 +271,17 @@ public class FileController {
         }
         String fileName = view.getFileName("Enter the file name to read: ");
         File userDir = currentUser.getUserDirectory();
-        File fileToRead= new File(userDir, fileName);
+        File fileToRead = new File(userDir, fileName);
         if (!fileToRead.exists()) {
             view.displayMessage("File does not exist.");
             return;
         }
         try {
-            RPGClass rpgClass = fileModel.readFromFile(currentUser, fileName, view);
-            if (rpgClass != null) {
-                rpgClass.displayData(view);
+            CharacterData characterData = fileModel.readFromFile(currentUser, fileName, view);
+            if (characterData != null) {
+                view.displayMessage("Character Name: " + characterData.getName());
+                characterData.getRpgRace().displayData(view);
+                characterData.getRpgClass().displayData(view);
             } else {
                 view.displayMessage("File is empty or missing data.");
             }
@@ -283,7 +291,7 @@ public class FileController {
         }
     }
 
-    /*private void editInformation() {
+    private void editInformation() {
         User currentUser = userController.getCurrentUser();
         if (currentUser == null) {
             view.displayMessage("No user selected.");
@@ -316,7 +324,8 @@ public class FileController {
             }
         } else {
             try {
-                characterName = fileModel.readCharacterNameFromFile(currentUser, fileName);
+                CharacterData characterData = fileModel.readFromFile(currentUser, fileName, view);
+                characterName = characterData.getName();
                 if (characterName == null) {
                     view.displayMessage("Error reading character name from file.");
                     return;
@@ -328,13 +337,16 @@ public class FileController {
             }
         }
         
+        String raceName = getRaceFromNumber();
         String className = getClassFromNumber();
     
+        RPGRace rpgRace = fileModel.races.get(raceName);
         RPGClass rpgClass = fileModel.classes.get(className);
-        if (rpgClass != null) {
+
+        if (rpgClass != null && rpgRace != null) {
             try {
                 rpgClass.askQuestions(view); // Ask questions specific to the class
-                fileModel.saveToFile(currentUser, fileName, characterName, rpgClass);
+                fileModel.saveToFile(currentUser, fileName, characterName, raceName, rpgClass, rpgRace);
                 view.displayMessage("Data updated in file.");
             } catch (IOException e) {
                 view.displayMessage("An error occurred while editing the file.");
@@ -343,7 +355,7 @@ public class FileController {
         } else {
             view.displayMessage("Invalid class.");
         }
-    }*/
+    }
     
     private void deleteInformation() {
         User currentUser = userController.getCurrentUser();

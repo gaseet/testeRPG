@@ -20,70 +20,79 @@ public class FileModel {
         classes.put("Rogue", new Rogue());
         // Add other RPG classes here
 
-
-
         races = new HashMap<>();
         races.put("Elf", new Elf());
+        races.put("Dwarf", new Dwarf());
+        // Add other RPG races here
     }
 
     public void saveToFile(User user, String fileName, String characterName, String characterRace, RPGClass rpgClass, RPGRace rpgRace) throws IOException {
-        fileName = fileName.trim(); // Trim whitespace from file name
-        File userDir = user.getUserDirectory(); // Use user's directory
+        fileName = fileName.trim();
+        File userDir = user.getUserDirectory();
         File file = new File(userDir, fileName);
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-            writer.write("Character Name: " + characterName); // Include character name in the file
+            writer.write("Character Name: " + characterName);
             writer.newLine();
-            rpgClass.saveToFile(writer); 
-            rpgRace.saveToFile(writer); // Include character race in the file
+            rpgRace.saveToFile(writer);
+            rpgClass.saveToFile(writer);
         } catch (IOException e) {
-            e.printStackTrace(); // Print stack trace for debugging
+            e.printStackTrace();
         }
     }
 
-    public String readCharacterNameFromFile(User user, String fileName) throws IOException {
+    public CharacterData readFromFile(User user, String fileName, FileView view) throws IOException {
         fileName = fileName.trim();
-        File userDir = user.getUserDirectory(); // Use user's directory
+        File userDir = user.getUserDirectory();
         File file = new File(userDir, fileName);
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line = reader.readLine();
-            if (line != null && line.startsWith("Character Name: ")) {
-                return line.substring("Character Name: ".length());
-            }
-        } catch (IOException e) {
-            e.printStackTrace(); // Print stack trace for debugging
-        }
-        return null; // Return null if the data is invalid or not found
-    }
-
-    public RPGClass readFromFile(User user, String fileName, FileView view) throws IOException {
-        fileName = fileName.trim();
-        File userDir = user.getUserDirectory(); // Use user's directory
-        File file = new File(userDir, fileName);
+    
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line = reader.readLine();
             if (line != null && line.startsWith("Character Name: ")) {
                 String characterName = line.substring("Character Name: ".length());
-                view.displayMessage("Character Name: " + characterName);
-                
-                line = reader.readLine(); // Read the next line
-                if (line != null && line.startsWith("Class: ")) {
-                    String className = line.substring("Class: ".length());
-                    RPGClass rpgClass = classes.get(className);
-                    if (rpgClass != null) {
-                        rpgClass.readFromFile(reader);
-                        return rpgClass;
+    
+                RPGClass rpgClass = null;
+                RPGRace rpgRace = null;
+    
+                while ((line = reader.readLine()) != null) {
+    
+                    if (line.startsWith("Race: ")) {
+                        String raceName = line.substring("Race: ".length());
+                        rpgRace = races.get(raceName);
+                        if (rpgRace != null) {
+                            rpgRace.readFromFile(reader);
+                        }
+                    }
+
+                    if (line.startsWith("Class: ")) {
+                        String className = line.substring("Class: ".length());
+                        rpgClass = classes.get(className);
+                        if (rpgClass != null) {
+                            rpgClass.readFromFile(reader);
+                        }
+                    }
+    
+                    if (rpgClass != null && rpgRace != null) {
+                        break;
                     }
                 }
+    
+                if (rpgClass != null && rpgRace != null) {
+                    return new CharacterData(rpgClass, rpgRace, characterName);
+                } else {
+                    view.displayMessage("File is missing class or race information.");
+                }
+            } else {
+                view.displayMessage("Character name not found in file.");
             }
         } catch (IOException e) {
-            e.printStackTrace(); // Print stack trace for debugging
+            e.printStackTrace();
         }
-        return null; // Return null if the data is invalid or not found
+        return null;
     }
 
     public boolean deleteFile(User user, String fileName) {
-        fileName = fileName.trim(); // Trim whitespace from file name
-        File userDir = user.getUserDirectory(); // Use user's directory
+        fileName = fileName.trim();
+        File userDir = user.getUserDirectory();
         File fileToDelete = new File(userDir, fileName);
         
         if (fileToDelete.exists() && fileToDelete.delete()) {

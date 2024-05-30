@@ -75,6 +75,9 @@ public class Berserker extends RPGClass {
             } else if (line.startsWith("Weapon: ")) {
                 weapon = line.substring("Weapon: ".length());
             }
+            if (martialArt != null && weapon != null) { // VERY IMPORTANT TO BREAK WHEN FOUND ALL
+                break;
+            }
         }
     }
 

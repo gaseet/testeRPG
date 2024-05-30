@@ -4,12 +4,12 @@ import java.io.*;
 import model.RPGRace;
 import view.FileView;
 
-public class Elf extends RPGRace {
+public class Dwarf extends RPGRace {
     private String subrace;
     FileView view = new FileView();
 
-    public Elf() {
-        super("Elf");
+    public Dwarf() {
+        super("Dwarf");
     }
 
     @Override
@@ -18,16 +18,16 @@ public class Elf extends RPGRace {
 
         do {
             view.displayMessage("What is your subrace?");
-            view.displayMessage("1. High Elf");
-            view.displayMessage("2. Wood Elf");
+            view.displayMessage("1. Hill Dwarf");
+            view.displayMessage("2. Mountain Dwarf");
             subRaceChoice = view.getIntAnswer();
 
             switch (subRaceChoice) {
                 case 1:
-                    subrace = "High Elf";
+                    subrace = "Hill Dwarf";
                     break;
                 case 2:
-                    subrace = "Wood Elf";
+                    subrace = "Mountain Dwarf";
                     break;
                 default:
                     view.displayMessage("Invalid number.");

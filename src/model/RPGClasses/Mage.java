@@ -74,6 +74,9 @@ public class Mage extends RPGClass {
             } else if (line.startsWith("Specialty: ")) {
                 specialty = line.substring("Specialty: ".length());
             }
+            if (element != null && specialty != null) { // VERY IMPORTANT TO BREAK WHEN FOUND ALL
+                break;
+            }
         }
     }
 
