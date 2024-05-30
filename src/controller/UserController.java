@@ -1,16 +1,18 @@
-package model;
+package controller;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UserModel {
+import model.User;
+
+public class UserController {
     private Map<String, User> users;
     private static final String BASE_DIRECTORY = "C:/javaUserFilesTest"; // Base directory
     private User currentUser; // Add a field to store the current user
 
-    public UserModel() {
+    public UserController() {
         users = new HashMap<>();
         loadExistingUsers();
     }

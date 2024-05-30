@@ -1,14 +1,14 @@
 import controller.FileController;
+import controller.UserController;
 import model.FileModel;
-import model.UserModel;
 import view.FileView;
 
 public class Main {
     public static void main(String[] args) {
-        UserModel userModel = new UserModel();
+        UserController userController = new UserController();
         FileModel fileModel = new FileModel();
         FileView view = new FileView();
-        FileController controller = new FileController(userModel, fileModel, view);
+        FileController controller = new FileController(userController, fileModel, view);
         controller.run();
     }
 }

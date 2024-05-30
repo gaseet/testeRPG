@@ -5,17 +5,16 @@ import java.io.IOException;
 import model.FileModel;
 import model.RPGClass;
 import model.User;
-import model.UserModel;
 import view.FileView;
 
 public class FileController {
-    private UserModel userModel;
+    private UserController userController;
     private FileModel fileModel;
     private FileView view;
     private User currentUser;
 
-    public FileController(UserModel userModel, FileModel fileModel, FileView view) {
-        this.userModel = userModel;
+    public FileController(UserController userController, FileModel fileModel, FileView view) {
+        this.userController = userController;
         this.fileModel = fileModel;
         this.view = view;
     }
@@ -113,7 +112,7 @@ public class FileController {
     private void addUser() {
         String username = view.getUserInput("Enter new username: ");
         username = capitalizeWords(username);
-        if (userModel.addUser(username)) {
+        if (userController.addUser(username)) {
             view.displayMessage("User " + username + " added successfully.");
             selectUserWhenAdding(username);
         } else {
@@ -122,8 +121,8 @@ public class FileController {
     }
 
     private void selectUserWhenAdding(String username) {
-        currentUser = userModel.getUser(username);
-        userModel.setCurrentUser(currentUser);
+        currentUser = userController.getUser(username);
+        userController.setCurrentUser(currentUser);
         if (currentUser != null) {
             view.displayMessage("User " + username + " selected.");
         } else {
@@ -144,7 +143,7 @@ public class FileController {
         }
     
         String username = currentUser.getUsername();
-        boolean deleted = userModel.deleteUser(username);
+        boolean deleted = userController.deleteUser(username);
         if (deleted) {
             view.displayMessage("User deleted successfully.");
             currentUser = null;
@@ -157,10 +156,10 @@ public class FileController {
         String username = view.getUserInput("Enter username: ");
         username = capitalizeWords(username);
         User aux;
-        aux = userModel.getUser(username);
+        aux = userController.getUser(username);
         if (aux != null) {
             currentUser = aux;
-            userModel.setCurrentUser(currentUser);
+            userController.setCurrentUser(currentUser);
             view.displayMessage("User " + username + " selected.");
         } else {
             view.displayMessage("User not found.");
@@ -168,7 +167,7 @@ public class FileController {
     }
 
     private void showCurrentUser() {
-        User currentUser = userModel.getCurrentUser(); // Get the current user from the model
+        User currentUser = userController.getCurrentUser(); // Get the current user from the model
         if (currentUser != null) {
             view.displayMessage("Current user: " + currentUser.getUsername());
         } else {
@@ -336,7 +335,7 @@ public class FileController {
         String newUsername = view.getUserInput("Enter new username: ");
         newUsername = capitalizeWords(newUsername);
     
-        boolean renamed = userModel.renameUser(currentUser.getUsername(), newUsername);
+        boolean renamed = userController.renameUser(currentUser.getUsername(), newUsername);
         if (renamed) {
             view.displayMessage("User renamed successfully to " + newUsername + ".");
             currentUser.setUsername(newUsername); // Update currentUser's username
