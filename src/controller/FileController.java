@@ -61,7 +61,7 @@ public class FileController {
                     break;
             }
         }
-    }
+    }  
 
     public static String capitalizeWords(String phrase) {
         if (phrase == null || phrase.isEmpty()) {
@@ -157,11 +157,14 @@ public class FileController {
             view.displayMessage("File already exists. Please choose a different file name.");
             return;
         }
+
+        String characterName = view.getFileName("Enter the character's name: ");
     
         System.out.println("Choose class: ");
         System.out.println("1. Mage");
         System.out.println("2. Bard");
-        System.out.println("3. Berserker"); // Add Berserker option
+        System.out.println("3. Berserker");
+        System.out.println("4. Paladin");
         int classChoice = view.getClassChoice();
         String className;
         switch (classChoice) {
@@ -174,6 +177,9 @@ public class FileController {
             case 3:
                 className = "Berserker";
                 break;
+            case 4:
+                className = "Paladin";
+                break;
             default:
                 view.displayMessage("Invalid class choice.");
                 return;
@@ -185,7 +191,7 @@ public class FileController {
         if (rpgClass != null) {
             rpgClass.askQuestions(view);
             try {
-                fileModel.saveToFile(currentUser, fileName, rpgClass);
+                fileModel.saveToFile(currentUser, fileName, characterName, rpgClass);
                 view.displayMessage("Data saved to file.");
             } catch (IOException e) {
                 view.displayMessage("An error occurred while saving to file.");
@@ -203,7 +209,7 @@ public class FileController {
         }
         String fileName = view.getFileName("Enter the file name to read: ");
         try {
-            RPGClass rpgClass = fileModel.readFromFile(currentUser, fileName);
+            RPGClass rpgClass = fileModel.readFromFile(currentUser, fileName, view);
             if (rpgClass != null) {
                 rpgClass.displayData(view);
             } else {
@@ -221,11 +227,14 @@ public class FileController {
             return;
         }
         String fileName = view.getFileName("Enter the file name to edit: ");
+
+        String characterName = view.getFileName("Enter the character's name: ");
         
         System.out.println("Choose class: ");
         System.out.println("1. Mage");
         System.out.println("2. Bard");
         System.out.println("3. Berserker");
+        System.out.println("4. Paladin");
         int classChoice = view.getClassChoice();
         String className;
         switch (classChoice) {
@@ -238,6 +247,9 @@ public class FileController {
             case 3:
                 className = "Berserker";
                 break;
+            case 4:
+                className = "Paladin";
+                break;
             default:
                 view.displayMessage("Invalid class choice.");
                 return;
@@ -247,7 +259,7 @@ public class FileController {
         if (rpgClass != null) {
             try {
                 rpgClass.askQuestions(view); // Ask questions specific to the class
-                fileModel.saveToFile(currentUser, fileName, rpgClass);
+                fileModel.saveToFile(currentUser, fileName, characterName, rpgClass);
                 view.displayMessage("Data updated in file.");
             } catch (IOException e) {
                 view.displayMessage("An error occurred while editing the file.");
