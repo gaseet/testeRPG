@@ -13,8 +13,26 @@ public class Paladin extends RPGClass {
 
     @Override
     public void askQuestions(FileView view) {
-        view.displayMessage("What is your Oath?");
-        oath = view.getUserInput("Enter oath: ");
+        int oathChoice = -1;
+
+        do {
+            view.displayMessage("What is your Oath?");
+            view.displayMessage("1. Sacred");
+            view.displayMessage("2. Fallen");
+            oathChoice = view.getIntAnswer();
+            
+            switch (oathChoice) {
+                case 1:
+                    oath = "Sacred";
+                    break;
+                case 2:
+                    oath = "Fallen";
+                    break;
+                default:
+                    view.displayMessage("Invalid number.");
+                    oathChoice = -1; // Reset to continue the loop
+            }
+        } while (oathChoice == -1);
     }
 
     @Override

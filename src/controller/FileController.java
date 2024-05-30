@@ -27,21 +27,27 @@ public class FileController {
         System.out.println("5. Rogue");
     }
 
-    private String getClassFromNumber(int classChoice) {
-        switch (classChoice) {
-            case 1:
-                return "Mage";
-            case 2:
-                return "Bard";
-            case 3:
-                return "Berserker";
-            case 4:
-                return"Paladin";
-            case 5:
-                return "Rogue";
-            default:
-                return null;
-        }
+    private String getClassFromNumber() {
+        int classChoice = -1;
+        do {
+            classesMenu();
+            classChoice = view.getIntAnswer();
+            switch (classChoice) {
+                case 1:
+                    return "Mage";
+                case 2:
+                    return "Bard";
+                case 3:
+                    return "Berserker";
+                case 4:
+                    return"Paladin";
+                case 5:
+                    return "Rogue";
+                default:
+                    view.displayMessage("Invalid number.");
+                    classChoice = -1;
+            }
+        } while (true);
     }
 
     public void run() {
@@ -190,9 +196,7 @@ public class FileController {
     
         String characterName = view.getUserInput("Enter the character's name: ");
     
-        classesMenu();
-        int classChoice = view.getClassChoice();
-        String className = getClassFromNumber(classChoice);
+        String className = getClassFromNumber();
     
         // Get the RPGClass instance based on the selected class name
         RPGClass rpgClass = fileModel.classes.get(className);
@@ -282,9 +286,7 @@ public class FileController {
             }
         }
         
-        classesMenu();
-        int classChoice = view.getClassChoice();
-        String className = getClassFromNumber(classChoice);
+        String className = getClassFromNumber();
     
         RPGClass rpgClass = fileModel.classes.get(className);
         if (rpgClass != null) {

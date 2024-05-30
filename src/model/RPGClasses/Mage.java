@@ -49,7 +49,7 @@ public class Mage extends RPGClass {
                     specialty = "Defense";
                     break;
                 default:
-                    view.displayMessage("Invalid input.");
+                    view.displayMessage("Invalid number.");
                     specialtyChoice = -1; // Reset to continue the loop
             }
         } while (specialtyChoice == -1);
@@ -67,11 +67,13 @@ public class Mage extends RPGClass {
 
     @Override
     public void readFromFile(BufferedReader reader) throws IOException {
-        String line = reader.readLine();
-        if (line.startsWith("Element: ")) {
-            element = line.substring("Element: ".length());
-        } else if (line.startsWith("Specialty: ")) {
-            specialty = line.substring("Specialty: ".length());
+        String line;
+        while ((line = reader.readLine()) != null) {
+            if (line.startsWith("Element: ")) {
+                element = line.substring("Element: ".length());
+            } else if (line.startsWith("Specialty: ")) {
+                specialty = line.substring("Specialty: ".length());
+            }
         }
     }
 

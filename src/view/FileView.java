@@ -36,29 +36,21 @@ public class FileView {
         return choice;
     }
 
-    public int getClassChoice() {
-        System.out.print("Enter your choice: ");
-        int choice = -1;
-        try {
-            choice = scanner.nextInt();
-        } catch (InputMismatchException e) {
-            System.out.println("Invalid input. Please enter a number.");
-            scanner.nextLine(); // Clear the invalid input
-        }
-        scanner.nextLine(); // Consume the newline character
-        return choice;
-    }
-
     public int getIntAnswer() {
-        System.out.print("Enter the number corresponding to your choice: ");
         int choice = -1;
-        try {
-            choice = scanner.nextInt();
-        } catch (InputMismatchException e) {
-            System.out.println("Invalid input. Please enter a number.");
-            scanner.nextLine(); // Clear the invalid input
-        }
-        scanner.nextLine(); // Consume the newline character
+        boolean validInput = false;
+
+        System.out.print("Enter the number corresponding to your choice: ");
+        do {
+            try {
+                choice = scanner.nextInt();
+                validInput = true; // If no exception, input is valid
+            } catch (InputMismatchException e) {
+                System.out.print("Invalid input. Please enter a number: ");
+            }
+            scanner.nextLine(); // Consume the newline character
+        } while (!validInput);
+
         return choice;
     }
 

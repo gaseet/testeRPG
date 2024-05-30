@@ -14,8 +14,26 @@ public class Rogue extends RPGClass{
 
     @Override
     public void askQuestions(FileView view) {
-        view.displayMessage("What is your stealth technique?");
-        stealthTechnique = view.getUserInput("Enter stealth technique: ");
+        int stealthTechniqueChoice = -1;
+
+        do {
+            view.displayMessage("What is your stealth technique?");
+            view.displayMessage("1. Trickster");
+            view.displayMessage("2. Thief");
+            stealthTechniqueChoice = view.getIntAnswer();
+
+            switch (stealthTechniqueChoice) {
+                case 1:
+                    stealthTechnique = "Trickster";
+                    break;
+                case 2:
+                    stealthTechnique = "Thief";
+                    break;
+                default:
+                    view.displayMessage("Invalid number.");
+                    stealthTechniqueChoice = -1; // Reset to continue the loop
+            }
+        } while (stealthTechniqueChoice == -1);
     }
 
     @Override

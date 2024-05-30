@@ -14,11 +14,46 @@ public class Berserker extends RPGClass {
 
     @Override
     public void askQuestions(FileView view) {
-        view.displayMessage("What is your Martial Art?");
-        martialArt = view.getUserInput("Enter martial art: ");
-        
-        view.displayMessage("What is your Weapon?");
-        weapon = view.getUserInput("Enter weapon: ");
+        int martialArtChoice = -1;
+        int weaponChoice = -1;
+
+        do {
+            view.displayMessage("What is your Martial Art?");
+            view.displayMessage("1. Karate");
+            view.displayMessage("2. Boxing");
+            martialArtChoice = view.getIntAnswer();
+
+            switch (martialArtChoice) {
+                case 1:
+                    martialArt = "Karate";
+                    break;
+                case 2:
+                    martialArt = "Boxing";
+                    break;
+                default:
+                    view.displayMessage("Invalid number.");
+                    martialArtChoice = -1; // Reset to continue the loop
+            }
+        } while (martialArtChoice == -1);
+
+        do {
+            view.displayMessage("What is your Weapon?");
+            view.displayMessage("1. Staff");
+            view.displayMessage("2. Sword");
+            weaponChoice = view.getIntAnswer();
+
+            switch (weaponChoice) {
+                case 1:
+                    weapon = "Staff";
+                    break;
+                case 2:
+                    weapon = "Sword";
+                    break;
+                default:
+                    view.displayMessage("Invalid input.");
+                    weaponChoice = -1; // Reset to continue the loop
+            }
+        } while (weaponChoice == -1);
     }
 
     @Override

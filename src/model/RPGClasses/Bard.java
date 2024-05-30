@@ -13,8 +13,26 @@ public class Bard extends RPGClass {
 
     @Override
     public void askQuestions(FileView view) {
-        view.displayMessage("What is your instrument?");
-        instrument = view.getUserInput("Violin/Flute: ");
+        int instrumentChoice = -1;
+
+        do {
+            view.displayMessage("What is your instrument?");
+            view.displayMessage("1. Violin");
+            view.displayMessage("2. Flute");
+            instrumentChoice = view.getIntAnswer();
+
+            switch (instrumentChoice) {
+                case 1:
+                    instrument = "Violin";
+                    break;
+                case 2:
+                instrument = "Flute";
+                    break;
+                default:
+                    view.displayMessage("Invalid number.");
+                    instrumentChoice = -1; // Reset to continue the loop
+            }
+        } while (instrumentChoice == -1);
     }
 
     @Override
@@ -27,9 +45,11 @@ public class Bard extends RPGClass {
 
     @Override
     public void readFromFile(BufferedReader reader) throws IOException {
-        String line = reader.readLine();
-        if (line.startsWith("Instrument: ")) {
-            instrument = line.substring("Instrument: ".length());
+        String line;
+        while ((line = reader.readLine()) != null) {
+            if (line.startsWith("Instrument: ")) {
+                instrument = line.substring("Instrument: ".length());
+            }
         }
     }
 
