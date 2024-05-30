@@ -20,6 +20,32 @@ public class FileController {
         this.view = view;
     }
 
+    private void classesMenu() {
+        System.out.println("Choose class: ");
+        System.out.println("1. Mage");
+        System.out.println("2. Bard");
+        System.out.println("3. Berserker");
+        System.out.println("4. Paladin");
+        System.out.println("5. Rogue");
+    }
+
+    private String getClassNumber(int classChoice) {
+        switch (classChoice) {
+            case 1:
+                return "Mage";
+            case 2:
+                return "Bard";
+            case 3:
+                return "Berserker";
+            case 4:
+                return"Paladin";
+            case 5:
+                return "Rogue";
+            default:
+                return null;
+        }
+    }
+
     public void run() {
         while (true) {
             int choice = view.getMenuChoice();
@@ -160,30 +186,9 @@ public class FileController {
 
         String characterName = view.getFileName("Enter the character's name: ");
     
-        System.out.println("Choose class: ");
-        System.out.println("1. Mage");
-        System.out.println("2. Bard");
-        System.out.println("3. Berserker");
-        System.out.println("4. Paladin");
+        classesMenu();
         int classChoice = view.getClassChoice();
-        String className;
-        switch (classChoice) {
-            case 1:
-                className = "Mage";
-                break;
-            case 2:
-                className = "Bard";
-                break;
-            case 3:
-                className = "Berserker";
-                break;
-            case 4:
-                className = "Paladin";
-                break;
-            default:
-                view.displayMessage("Invalid class choice.");
-                return;
-        }
+        String className = getClassNumber(classChoice);
     
         // Get the RPGClass instance based on the selected class name
         RPGClass rpgClass = fileModel.classes.get(className);
@@ -230,30 +235,9 @@ public class FileController {
 
         String characterName = view.getFileName("Enter the character's name: ");
         
-        System.out.println("Choose class: ");
-        System.out.println("1. Mage");
-        System.out.println("2. Bard");
-        System.out.println("3. Berserker");
-        System.out.println("4. Paladin");
+        classesMenu();
         int classChoice = view.getClassChoice();
-        String className;
-        switch (classChoice) {
-            case 1:
-                className = "Mage";
-                break;
-            case 2:
-                className = "Bard";
-                break;
-            case 3:
-                className = "Berserker";
-                break;
-            case 4:
-                className = "Paladin";
-                break;
-            default:
-                view.displayMessage("Invalid class choice.");
-                return;
-        }
+        String className = getClassNumber(classChoice);
     
         RPGClass rpgClass = fileModel.classes.get(className);
         if (rpgClass != null) {

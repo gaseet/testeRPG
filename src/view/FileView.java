@@ -1,10 +1,12 @@
 package view;
+import java.io.IOException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class FileView {
     private Scanner scanner = new Scanner(System.in);
 
-    public int getMenuChoice() {
+    public void printChoices() {
         System.out.println("Choose an option:");
         System.out.println("1. Add user");
         System.out.println("2. Select user");
@@ -16,16 +18,33 @@ public class FileView {
         System.out.println("8. Edit file");
         System.out.println("9. Delete file");
         System.out.println("10. Exit");
-        int choice = scanner.nextInt();
+    }
+
+    public int getMenuChoice() {
+        printChoices();
+        int choice = -1;
+        try {
+            choice = scanner.nextInt();
+        } catch (InputMismatchException e) {
+            e.printStackTrace();
+            System.out.println("Invalid input.");
+            printChoices();
+            scanner.nextLine(); // Clear the invalid input
+        }
         scanner.nextLine();  // Consume the newline character
         return choice;
     }
 
     public int getClassChoice() {
         System.out.print("Enter your choice: ");
-        int choice = scanner.nextInt();
+        int choice = -1;
+        try {
+            choice = scanner.nextInt();
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid input. Please enter a number.");
+            scanner.nextLine(); // Clear the invalid input
+        }
         scanner.nextLine(); // Consume the newline character
-        System.out.println("Choice received: " + choice); // Debugging statement
         return choice;
     }
 
