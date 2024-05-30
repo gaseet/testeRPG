@@ -22,7 +22,6 @@ public class FileModel {
 
     public void saveToFile(User user, String fileName, String characterName, RPGClass rpgClass) throws IOException {
         fileName = fileName.trim(); // Trim whitespace from file name
-        fileName = fileName + ".txt";
         File userDir = user.getUserDirectory(); // Use user's directory
         File file = new File(userDir, fileName);
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
@@ -36,7 +35,6 @@ public class FileModel {
 
     public RPGClass readFromFile(User user, String fileName, FileView view) throws IOException {
         fileName = fileName.trim();
-        fileName = fileName + ".txt";
         File userDir = user.getUserDirectory(); // Use user's directory
         File file = new File(userDir, fileName);
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
@@ -63,7 +61,6 @@ public class FileModel {
 
     public boolean deleteFile(User user, String fileName) {
         fileName = fileName.trim(); // Trim whitespace from file name
-        fileName = fileName + ".txt";
         File userDir = user.getUserDirectory(); // Use user's directory
         File fileToDelete = new File(userDir, fileName);
         

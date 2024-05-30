@@ -36,6 +36,7 @@ public class UserModel {
                     e.printStackTrace();
                 }
             }
+            currentUser = null;
             users.remove(username);
             return true;
         }
@@ -55,7 +56,7 @@ public class UserModel {
     }
 
     private void createUserDirectory(User user) {
-        File userDir = user.getUserDirectory();
+        File userDir = new File(BASE_DIRECTORY + "/" + user.getUsername());
         if (!userDir.exists()) {
             userDir.mkdirs(); // Ensure directories are created recursively
         }
@@ -88,4 +89,43 @@ public class UserModel {
             throw new IOException("Failed to delete directory: " + directory.getAbsolutePath());
         }
     }
+
+    public boolean renameUser(String oldUsername, String newUsername) {
+        User user = getUser(oldUsername);
+        if (user != null) {
+            // Check if the new username already exists
+            if (userExists(newUsername)) {
+                return false; // New username already exists
+            }
+            
+            // Get the old and new directories
+            File oldDir = user.getUserDirectory();
+            File newDir = new File(BASE_DIRECTORY + "/" + newUsername);
+            
+            // Rename the user's directory
+            if (oldDir.renameTo(newDir)) {
+                // Update the user's username
+                user.setUsername(newUsername);
+                // Remove the old username entry from the user list
+                users.remove(oldUsername);
+                // Add the user with the new username to the user list
+                users.put(newUsername, user);
+                return true;
+            } else {
+                // Roll back the username change if directory renaming fails
+                user.setUsername(oldUsername);
+                return false;
+            }
+        }
+        return false; // User not found
+    }    
+    
+    public boolean userExists(String username) {
+        for (Map.Entry<String, User> entry : users.entrySet()) {
+            if (entry.getKey().equalsIgnoreCase(username)) {
+                return true; // Username already exists
+            }
+        }
+        return false; // Username doesn't exist
+    }      
 }

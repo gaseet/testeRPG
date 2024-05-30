@@ -61,24 +61,27 @@ public class FileController {
                     showCurrentUser();
                     break;
                 case 4:
-                    deleteSelectedUser();
+                    editUser();
                     break;
                 case 5:
-                    showUserFiles();
+                    deleteSelectedUser();
                     break;
                 case 6:
-                    saveInformation();
+                    showUserFiles();
                     break;
                 case 7:
-                    readInformation();
+                    saveInformation();
                     break;
                 case 8:
-                    editInformation();
+                    readInformation();
                     break;
                 case 9:
-                    deleteInformation();
+                    editInformation();
                     break;
                 case 10:
+                    deleteInformation();
+                    break;
+                case 11:
                     view.displayMessage("Exiting...");
                     view.closeScanner();
                     return;
@@ -111,7 +114,7 @@ public class FileController {
         String username = view.getUserInput("Enter new username: ");
         username = capitalizeWords(username);
         if (userModel.addUser(username)) {
-            view.displayMessage("User " + username + " successfully.");
+            view.displayMessage("User " + username + " added successfully.");
             selectUserWhenAdding(username);
         } else {
             view.displayMessage("User already exists.");
@@ -183,8 +186,8 @@ public class FileController {
             view.displayMessage("File already exists. Please choose a different file name.");
             return;
         }
-
-        String characterName = view.getFileName("Enter the character's name: ");
+    
+        String characterName = view.getUserInput("Enter the character's name: ");
     
         classesMenu();
         int classChoice = view.getClassChoice();
@@ -205,7 +208,7 @@ public class FileController {
         } else {
             view.displayMessage("Invalid class.");
         }
-    }      
+    }        
 
     private void readInformation() {
         if (currentUser == null) {
@@ -213,6 +216,12 @@ public class FileController {
             return;
         }
         String fileName = view.getFileName("Enter the file name to read: ");
+        File userDir = currentUser.getUserDirectory();
+        File fileToRead= new File(userDir, fileName);
+        if (!fileToRead.exists()) {
+            view.displayMessage("File does not exist.");
+            return;
+        }
         try {
             RPGClass rpgClass = fileModel.readFromFile(currentUser, fileName, view);
             if (rpgClass != null) {
@@ -232,34 +241,42 @@ public class FileController {
             return;
         }
         String fileName = view.getFileName("Enter the file name to edit: ");
-
-        view.displayMessage("This will override ALL existing information on this character sheet: ");
-        String confirmation = view.getUserInput("Are you sure you want to edit the selected character sheet? Type CONFIRM to proceed: ");
-        if (!confirmation.equals("CONFIRM")) {
-            view.displayMessage("Editing operation canceled.");
-            return;
-        }
-
-        String characterName = view.getFileName("Enter the character's name: ");
-        
-        classesMenu();
-        int classChoice = view.getClassChoice();
-        String className = getClassNumber(classChoice);
+        File userDir = currentUser.getUserDirectory();
+        File fileToEdit = new File(userDir, fileName);
     
-        RPGClass rpgClass = fileModel.classes.get(className);
-        if (rpgClass != null) {
-            try {
-                rpgClass.askQuestions(view); // Ask questions specific to the class
-                fileModel.saveToFile(currentUser, fileName, characterName, rpgClass);
-                view.displayMessage("Data updated in file.");
-            } catch (IOException e) {
-                view.displayMessage("An error occurred while editing the file.");
-                e.printStackTrace();
+        if (fileToEdit.exists()) {
+            view.displayMessage("This will override ALL existing information on this character sheet: ");
+            String confirmation = view.getUserInput("Are you sure you want to edit the selected character sheet? Type CONFIRM to proceed: ");
+            if (!confirmation.equals("CONFIRM")) {
+                view.displayMessage("Editing operation canceled.");
+                return;
+            }
+        
+            String characterName = view.getUserInput("Enter the character's name: ");
+            
+            classesMenu();
+            int classChoice = view.getClassChoice();
+            String className = getClassNumber(classChoice);
+        
+            RPGClass rpgClass = fileModel.classes.get(className);
+            if (rpgClass != null) {
+                try {
+                    rpgClass.askQuestions(view); // Ask questions specific to the class
+                    fileModel.saveToFile(currentUser, fileName, characterName, rpgClass);
+                    view.displayMessage("Data updated in file.");
+                } catch (IOException e) {
+                    view.displayMessage("An error occurred while editing the file.");
+                    e.printStackTrace();
+                }
+            } else {
+                view.displayMessage("Invalid class.");
             }
         } else {
-            view.displayMessage("Invalid class.");
+            view.displayMessage("File does not exist.");
+            return;
         }
     }
+    
     
     
     private void deleteInformation() {
@@ -290,7 +307,6 @@ public class FileController {
         }
     }
 
-
     private void showUserFiles() {
         if (currentUser == null) {
             view.displayMessage("No user selected.");
@@ -299,12 +315,30 @@ public class FileController {
         File userDir = currentUser.getUserDirectory();
         File[] files = userDir.listFiles();
         if (files != null && files.length > 0) {
-            view.displayMessage("Files in current user directory:");
+            view.displayMessage("Files for user " + currentUser.getUsername() + ":");
             for (File file : files) {
                 view.displayMessage(file.getName());
             }
         } else {
-            view.displayMessage("No files found in current user directory.");
+            view.displayMessage("No files found for user " + currentUser.getUsername() + ".");
         }
     }
+
+    private void editUser() {
+        if (currentUser == null) {
+            view.displayMessage("No user selected.");
+            return;
+        }
+    
+        String newUsername = view.getUserInput("Enter new username: ");
+        newUsername = capitalizeWords(newUsername);
+    
+        boolean renamed = userModel.renameUser(currentUser.getUsername(), newUsername);
+        if (renamed) {
+            view.displayMessage("User renamed successfully to " + newUsername + ".");
+            currentUser.setUsername(newUsername); // Update currentUser's username
+        } else {
+            view.displayMessage("New username already exists. Failed to rename user.");
+        }
+    }     
 }
