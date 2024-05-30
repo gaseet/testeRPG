@@ -233,6 +233,13 @@ public class FileController {
         }
         String fileName = view.getFileName("Enter the file name to edit: ");
 
+        view.displayMessage("This will override ALL existing information on this character sheet: ");
+        String confirmation = view.getUserInput("Are you sure you want to edit the selected character sheet? Type CONFIRM to proceed: ");
+        if (!confirmation.equals("CONFIRM")) {
+            view.displayMessage("Editing operation canceled.");
+            return;
+        }
+
         String characterName = view.getFileName("Enter the character's name: ");
         
         classesMenu();
