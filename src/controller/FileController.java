@@ -247,57 +247,57 @@ public class FileController {
         File userDir = currentUser.getUserDirectory();
         File fileToEdit = new File(userDir, fileName);
     
-        if (fileToEdit.exists()) {
-            view.displayMessage("This will override ALL existing information on this character sheet: ");
-            String confirmation = view.getUserInput("Are you sure you want to edit the selected character sheet? Type CONFIRM to proceed: ");
-            if (!confirmation.equals("CONFIRM")) {
-                view.displayMessage("Editing operation canceled.");
+        if (!fileToEdit.exists()) {
+            view.displayMessage("File does not exist.");
+            return;
+        }
+        
+        view.displayMessage("This will override ALL existing information on this character sheet: ");
+        String confirmation = view.getUserInput("Are you sure you want to edit the selected character sheet? Type CONFIRM to proceed: ");
+        if (!confirmation.equals("CONFIRM")) {
+            view.displayMessage("Editing operation canceled.");
+            return;
+        }
+
+        String characterName;
+
+        String changeName = view.getUserInput("Would you like to change the character's name? (YES/NO): ");
+        if (changeName.equals("YES")) {
+            characterName = view.getUserInput("Enter the character's new name: ");
+            if (characterName == null) {
+                view.displayMessage("Error reading character name from file.");
                 return;
             }
-
-            String characterName;
-
-            String changeName = view.getUserInput("Would you like to change the character's name? (YES/NO): ");
-            if (changeName.equals("YES")) {
-                characterName = view.getUserInput("Enter the character's new name: ");
+        } else {
+            try {
+                characterName = fileModel.readCharacterNameFromFile(currentUser, fileName);
                 if (characterName == null) {
                     view.displayMessage("Error reading character name from file.");
                     return;
                 }
-            } else {
-                try {
-                    characterName = fileModel.readCharacterNameFromFile(currentUser, fileName);
-                    if (characterName == null) {
-                        view.displayMessage("Error reading character name from file.");
-                        return;
-                    }
-                } catch (IOException e) {
-                    view.displayMessage("An error occurred while reading the character name from file.");
-                    e.printStackTrace();
-                    return;
-                }
+            } catch (IOException e) {
+                view.displayMessage("An error occurred while reading the character name from file.");
+                e.printStackTrace();
+                return;
             }
-            
-            classesMenu();
-            int classChoice = view.getClassChoice();
-            String className = getClassNumber(classChoice);
+        }
         
-            RPGClass rpgClass = fileModel.classes.get(className);
-            if (rpgClass != null) {
-                try {
-                    rpgClass.askQuestions(view); // Ask questions specific to the class
-                    fileModel.saveToFile(currentUser, fileName, characterName, rpgClass);
-                    view.displayMessage("Data updated in file.");
-                } catch (IOException e) {
-                    view.displayMessage("An error occurred while editing the file.");
-                    e.printStackTrace();
-                }
-            } else {
-                view.displayMessage("Invalid class.");
+        classesMenu();
+        int classChoice = view.getClassChoice();
+        String className = getClassNumber(classChoice);
+    
+        RPGClass rpgClass = fileModel.classes.get(className);
+        if (rpgClass != null) {
+            try {
+                rpgClass.askQuestions(view); // Ask questions specific to the class
+                fileModel.saveToFile(currentUser, fileName, characterName, rpgClass);
+                view.displayMessage("Data updated in file.");
+            } catch (IOException e) {
+                view.displayMessage("An error occurred while editing the file.");
+                e.printStackTrace();
             }
         } else {
-            view.displayMessage("File does not exist.");
-            return;
+            view.displayMessage("Invalid class.");
         }
     }
     
