@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import model.FileModel;
 import model.RPGClass;
+import model.RPGRace;
 import model.User;
 import view.FileView;
 
@@ -50,6 +51,26 @@ public class FileController {
         } while (true);
     }
 
+    private void racesMenu() {
+        System.out.println("Choose race: ");
+        System.out.println("1. Elf");
+    }
+
+    private String getRaceFromNumber() {
+        int classChoice = -1;
+        do {
+            racesMenu();
+            classChoice = view.getIntAnswer();
+            switch (classChoice) {
+                case 1:
+                    return "Elf";
+                default:
+                    view.displayMessage("Invalid number.");
+                    classChoice = -1;
+            }
+        } while (true);
+    }
+
     public void run() {
         while (true) {
             int choice = view.getMenuChoice();
@@ -80,7 +101,7 @@ public class FileController {
                     readInformation();
                     break;
                 case 9:
-                    editInformation();
+                   // editInformation();
                     break;
                 case 10:
                     deleteInformation();
@@ -195,16 +216,37 @@ public class FileController {
         }
     
         String characterName = view.getUserInput("Enter the character's name: ");
+
+        String raceName = getRaceFromNumber();
+        // Debug statement to verify the selected class
+        view.displayMessage("Selected race: " + raceName);
+
+        RPGRace rpgRace = fileModel.races.get(raceName);
     
+        // Debug statement to verify the retrieved RPGRace instance
+        System.out.println("RPGRace instance: " + rpgRace);
+
+        if (rpgRace != null) {
+            rpgRace.askQuestions(view);
+        } else {
+            view.displayMessage("Invalid race.");
+            return;
+        }
+
         String className = getClassFromNumber();
+        // Debug statement to verify the selected class
+        view.displayMessage("Selected class: " + className);
     
         // Get the RPGClass instance based on the selected class name
         RPGClass rpgClass = fileModel.classes.get(className);
+
+        // Debug statement to verify the retrieved RPGClass instance
+        System.out.println("RPGClass instance: " + rpgClass);
     
         if (rpgClass != null) {
             rpgClass.askQuestions(view);
             try {
-                fileModel.saveToFile(currentUser, fileName, characterName, rpgClass);
+                fileModel.saveToFile(currentUser, fileName, characterName, raceName, rpgClass, rpgRace);
                 view.displayMessage("Data saved to file.");
             } catch (IOException e) {
                 view.displayMessage("An error occurred while saving to file.");
@@ -241,7 +283,7 @@ public class FileController {
         }
     }
 
-    private void editInformation() {
+    /*private void editInformation() {
         User currentUser = userController.getCurrentUser();
         if (currentUser == null) {
             view.displayMessage("No user selected.");
@@ -301,7 +343,7 @@ public class FileController {
         } else {
             view.displayMessage("Invalid class.");
         }
-    }
+    }*/
     
     private void deleteInformation() {
         User currentUser = userController.getCurrentUser();

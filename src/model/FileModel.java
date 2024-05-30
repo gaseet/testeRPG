@@ -4,11 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import model.RPGClasses.*;
-
+import model.RPGRaces.*;
 import view.FileView;
 
 public class FileModel {
     public Map<String, RPGClass> classes;
+    public Map<String, RPGRace> races;
 
     public FileModel() {
         classes = new HashMap<>();
@@ -18,16 +19,22 @@ public class FileModel {
         classes.put("Paladin", new Paladin());
         classes.put("Rogue", new Rogue());
         // Add other RPG classes here
+
+
+
+        races = new HashMap<>();
+        races.put("Elf", new Elf());
     }
 
-    public void saveToFile(User user, String fileName, String characterName, RPGClass rpgClass) throws IOException {
+    public void saveToFile(User user, String fileName, String characterName, String characterRace, RPGClass rpgClass, RPGRace rpgRace) throws IOException {
         fileName = fileName.trim(); // Trim whitespace from file name
         File userDir = user.getUserDirectory(); // Use user's directory
         File file = new File(userDir, fileName);
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             writer.write("Character Name: " + characterName); // Include character name in the file
             writer.newLine();
-            rpgClass.saveToFile(writer);
+            rpgClass.saveToFile(writer); 
+            rpgRace.saveToFile(writer); // Include character race in the file
         } catch (IOException e) {
             e.printStackTrace(); // Print stack trace for debugging
         }
