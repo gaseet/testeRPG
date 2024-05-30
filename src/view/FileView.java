@@ -49,6 +49,19 @@ public class FileView {
         return choice;
     }
 
+    public int getIntAnswer() {
+        System.out.print("Enter the number corresponding to your choice: ");
+        int choice = -1;
+        try {
+            choice = scanner.nextInt();
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid input. Please enter a number.");
+            scanner.nextLine(); // Clear the invalid input
+        }
+        scanner.nextLine(); // Consume the newline character
+        return choice;
+    }
+
     public String getFileName(String prompt) {
         System.out.print(prompt);
         String fileName = scanner.nextLine();

@@ -6,6 +6,7 @@ import view.FileView;
 
 public class Mage extends RPGClass {
     private String element;
+    private String specialty;
 
     public Mage() {
         super("Mage");
@@ -13,8 +14,45 @@ public class Mage extends RPGClass {
 
     @Override
     public void askQuestions(FileView view) {
-        view.displayMessage("What is your Element?");
-        element = view.getUserInput("Fire/Ice: ");
+        int elementChoice = -1;
+        int specialtyChoice = -1;
+        do {
+            view.displayMessage("What is your Element?");
+            view.displayMessage("1. Fire");
+            view.displayMessage("2. Ice");
+            elementChoice = view.getIntAnswer();
+            
+            switch (elementChoice) {
+                case 1:
+                    element = "Fire";
+                    break;
+                case 2:
+                    element = "Ice";
+                    break;
+                default:
+                    view.displayMessage("Invalid input.");
+                    elementChoice = -1; // Reset to continue the loop
+            }
+        } while (elementChoice == -1);
+        
+        do {
+            view.displayMessage("What is your Specialty?");
+            view.displayMessage("1. Attack");
+            view.displayMessage("2. Defense");
+            specialtyChoice = view.getIntAnswer();
+            
+            switch (specialtyChoice) {
+                case 1:
+                    specialty = "Attack";
+                    break;
+                case 2:
+                    specialty = "Defense";
+                    break;
+                default:
+                    view.displayMessage("Invalid input.");
+                    specialtyChoice = -1; // Reset to continue the loop
+            }
+        } while (specialtyChoice == -1);
     }
 
     @Override
@@ -23,6 +61,8 @@ public class Mage extends RPGClass {
         writer.newLine();
         writer.write("Element: " + element);
         writer.newLine();
+        writer.write("Specialty: " + specialty);
+        writer.newLine();
     }
 
     @Override
@@ -30,6 +70,8 @@ public class Mage extends RPGClass {
         String line = reader.readLine();
         if (line.startsWith("Element: ")) {
             element = line.substring("Element: ".length());
+        } else if (line.startsWith("Specialty: ")) {
+            specialty = line.substring("Specialty: ".length());
         }
     }
 
@@ -37,5 +79,6 @@ public class Mage extends RPGClass {
     public void displayData(FileView view) {
         view.displayMessage("Class: " + className);
         view.displayMessage("Element: " + element);
+        view.displayMessage("Specialty: " + specialty);
     }
 }
