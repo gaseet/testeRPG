@@ -7,15 +7,15 @@ public class FileView {
 
     public void printChoices() {
         System.out.println("Choose an option:");
-        System.out.println("1. Add user");
+        System.out.println("1. Add new user");
         System.out.println("2. Select user");
-        System.out.println("3. Show current user");
+        System.out.println("3. Show current user's name");
         System.out.println("4. Delete current user");
-        System.out.println("5. List current user's files");
-        System.out.println("6. Save to file");
-        System.out.println("7. Read from file");
-        System.out.println("8. Edit file");
-        System.out.println("9. Delete file");
+        System.out.println("5. List current user's character sheets");
+        System.out.println("6. Make new character sheet");
+        System.out.println("7. View existing character sheet");
+        System.out.println("8. Edit existing character sheet");
+        System.out.println("9. Delete existing character sheet");
         System.out.println("10. Exit");
     }
 
