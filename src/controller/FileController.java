@@ -180,7 +180,6 @@ public class FileController {
         boolean deleted = userController.deleteUser(username);
         if (deleted) {
             view.displayMessage("User deleted successfully.");
-            userController.setCurrentUser(null);
         } else {
             view.displayMessage("User not found or failed to delete.");
         }

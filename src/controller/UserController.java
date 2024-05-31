@@ -38,13 +38,16 @@ public class UserController {
             if (userDir.exists() && userDir.isDirectory()) {
                 try {
                     deleteDirectory(userDir);
+                    // Only remove the user from the hashmap after successful deletion
+                    users.remove(username);
+                    // Check if the user being deleted is the current user
+                    currentUser = null;
+                    return true;
                 } catch (IOException e) {
                     e.printStackTrace();
+                    return false; // Return false if deletion fails
                 }
             }
-            currentUser = null;
-            users.remove(username);
-            return true;
         }
         return false;
     }
