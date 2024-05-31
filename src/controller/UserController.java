@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.File;
+import config.Config;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +12,6 @@ import view.FileView;
 
 public class UserController {
     private Map<String, User> users;
-    private static final String BASE_DIRECTORY = "C:/javaUserFilesTest"; // Base directory
     private User currentUser; // Add a field to store the current user
     private FileView view = new FileView();
 
@@ -65,14 +65,14 @@ public class UserController {
     }
 
     private void createUserDirectory(User user) {
-        File userDir = new File(BASE_DIRECTORY + "/" + user.getUsername());
+        File userDir = new File(Config.BASE_DIRECTORY + "/" + user.getUsername());
         if (!userDir.exists()) {
             userDir.mkdirs(); // Ensure directories are created recursively
         }
     }
 
     private void loadExistingUsers() {
-        File baseDir = new File(BASE_DIRECTORY);
+        File baseDir = new File(Config.BASE_DIRECTORY);
         File[] userDirs = baseDir.listFiles(File::isDirectory);
         if (userDirs != null) {
             for (File userDir : userDirs) {
@@ -121,7 +121,7 @@ public class UserController {
             
             // Get the old and new directories
             File oldDir = user.getUserDirectory();
-            File newDir = new File(BASE_DIRECTORY + "/" + newUsername);
+            File newDir = new File(Config.BASE_DIRECTORY + "/" + newUsername);
             
             // Rename the user's directory
             if (oldDir.renameTo(newDir)) {

@@ -1,15 +1,15 @@
 package model;
 
 import java.io.File;
+import config.Config;
 
 public class User {
     private String username;
     private File userDirectory;
-    private static final String BASE_DIRECTORY = "C:/javaUserFilesTest"; // Base directory
 
     public User(String username) {
         this.username = username;
-        this.userDirectory = new File(BASE_DIRECTORY + "/" + username);
+        this.userDirectory = new File(Config.BASE_DIRECTORY + "/" + username);
         if (!userDirectory.exists()) {
             userDirectory.mkdirs();
         }
@@ -20,7 +20,7 @@ public class User {
     }
 
     public File getUserDirectory() {
-        this.userDirectory = new File(BASE_DIRECTORY + "/" + username);
+        this.userDirectory = new File(Config.BASE_DIRECTORY + "/" + username);
         if (!userDirectory.exists()) {
             userDirectory.mkdirs();
         }
@@ -30,7 +30,7 @@ public class User {
     public void setUsername(String username) {
         this.username = username;
         // Update userDirectory whenever username changes
-        this.userDirectory = new File(BASE_DIRECTORY + "/" + username);
+        this.userDirectory = new File(Config.BASE_DIRECTORY + "/" + username);
         if (!userDirectory.exists()) {
             userDirectory.mkdirs();
         }
