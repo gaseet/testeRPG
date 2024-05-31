@@ -7,10 +7,13 @@ import java.util.Map;
 
 import model.User;
 
+import view.FileView;
+
 public class UserController {
     private Map<String, User> users;
     private static final String BASE_DIRECTORY = "C:/javaUserFilesTest"; // Base directory
     private User currentUser; // Add a field to store the current user
+    private FileView view = new FileView();
 
     public UserController() {
         users = new HashMap<>();
@@ -74,6 +77,18 @@ public class UserController {
                 User user = new User(username);
                 users.put(username, user);
             }
+        }
+    }
+
+    public void showAllUsers() {
+        if (users.isEmpty()) {
+            view.displayMessage("No users found.");
+            return;
+        }
+
+        view.displayMessage("List of all users:");
+        for (Map.Entry<String, User> entry : users.entrySet()) {
+            view.displayMessage(entry.getKey());
         }
     }
 

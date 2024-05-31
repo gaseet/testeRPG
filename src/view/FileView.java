@@ -7,18 +7,19 @@ public class FileView {
     private Scanner scanner = new Scanner(System.in);
 
     public void printChoices() {
-        System.out.println("Menudsadasdasdasdas:");
+        System.out.println("Menu:");
         System.out.println("1. Add new user");
-        System.out.println("2. Select user");
-        System.out.println("3. Show current user's name");
-        System.out.println("4. Change username");
-        System.out.println("5. Delete current user");
-        System.out.println("6. List current user's character sheets");
-        System.out.println("7. Make new character sheet");
-        System.out.println("8. View existing character sheet");
-        System.out.println("9. Edit existing character sheet");
-        System.out.println("10. Delete existing character sheet");
-        System.out.println("11. Exit");
+        System.out.println("2. Show all users");
+        System.out.println("3. Select user");
+        System.out.println("4. Show current user's name");
+        System.out.println("5. Change username");
+        System.out.println("6. Delete current user");
+        System.out.println("7. List current user's character sheets");
+        System.out.println("8. Make new character sheet");
+        System.out.println("9. View existing character sheet");
+        System.out.println("10. Edit existing character sheet");
+        System.out.println("11. Delete existing character sheet");
+        System.out.println("12. Exit");
     }
 
     public int getMenuChoice() {

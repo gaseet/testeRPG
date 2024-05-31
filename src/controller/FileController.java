@@ -84,33 +84,36 @@ public class FileController {
                     addUser();
                     break;
                 case 2:
-                    selectUser();
+                    showAllUsers();
                     break;
                 case 3:
-                    showCurrentUser();
+                    selectUser();
                     break;
                 case 4:
-                    editUser();
+                    showCurrentUser();
                     break;
                 case 5:
-                    deleteSelectedUser();
+                    editUser();
                     break;
                 case 6:
-                    showUserFiles();
+                    deleteSelectedUser();
                     break;
                 case 7:
-                    saveInformation();
+                    showUserFiles();
                     break;
                 case 8:
-                    readInformation();
+                    saveInformation();
                     break;
                 case 9:
-                    editInformation();
+                    readInformation();
                     break;
                 case 10:
-                    deleteInformation();
+                    editInformation();
                     break;
                 case 11:
+                    deleteInformation();
+                    break;
+                case 12:
                     view.displayMessage("Exiting...");
                     view.closeScanner();
                     return;
@@ -202,6 +205,10 @@ public class FileController {
         } else {
             view.displayMessage("No user selected.");
         }
+    }
+
+    private void showAllUsers() {
+        userController.showAllUsers();
     }
 
     private void saveInformation() {
