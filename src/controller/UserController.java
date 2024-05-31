@@ -142,11 +142,6 @@ public class UserController {
     }    
     
     public boolean userExists(String username) {
-        for (Map.Entry<String, User> entry : users.entrySet()) {
-            if (entry.getKey().equalsIgnoreCase(username)) {
-                return true; // Username already exists
-            }
-        }
-        return false; // Username doesn't exist
-    }      
+        return users.containsKey(username);
+    }
 }
