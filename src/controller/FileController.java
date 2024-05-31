@@ -27,6 +27,7 @@ public class FileController {
         System.out.println("3. Berserker");
         System.out.println("4. Paladin");
         System.out.println("5. Rogue");
+        System.out.println("6. Druid");
     }
 
     private String getClassFromNumber() {
@@ -45,6 +46,8 @@ public class FileController {
                     return"Paladin";
                 case 5:
                     return "Rogue";
+                case 6:
+                    return "Druid";
                 default:
                     view.displayMessage("Invalid number.");
                     classChoice = -1;
@@ -122,7 +125,7 @@ public class FileController {
                     break;
             }
         }
-    }  
+    }
 
     public static String capitalizeWords(String phrase) {
         if (phrase == null || phrase.isEmpty()) {
@@ -230,7 +233,7 @@ public class FileController {
         String raceName = getRaceFromNumber();
 
         // Debug statement to verify the selected race
-        view.displayMessage("Selected race: " + raceName);
+        //view.displayMessage("Selected race: " + raceName);
 
         RPGRace rpgRace = fileModel.races.get(raceName);
     
@@ -247,7 +250,7 @@ public class FileController {
         String className = getClassFromNumber();
 
         // Debug statement to verify the selected class
-        view.displayMessage("Selected class: " + className);
+        //view.displayMessage("Selected class: " + className);
     
         // Get the RPGClass instance based on the selected class name
         RPGClass rpgClass = fileModel.classes.get(className);
@@ -344,14 +347,25 @@ public class FileController {
         }
         
         String raceName = getRaceFromNumber();
-        String className = getClassFromNumber();
-    
         RPGRace rpgRace = fileModel.races.get(raceName);
+
+        if (rpgRace != null) {
+            rpgRace.askQuestions(view);
+        } else {
+            view.displayMessage("Invalid race.");
+        }
+
+        String className = getClassFromNumber();
         RPGClass rpgClass = fileModel.classes.get(className);
+
+        if (rpgClass != null) {
+            rpgClass.askQuestions(view); // Ask questions specific to the class
+        } else {
+            view.displayMessage("Invalid class.");
+        }
 
         if (rpgClass != null && rpgRace != null) {
             try {
-                rpgClass.askQuestions(view); // Ask questions specific to the class
                 fileModel.saveToFile(currentUser, fileName, characterName, raceName, rpgClass, rpgRace);
                 view.displayMessage("Data updated in file.");
             } catch (IOException e) {
