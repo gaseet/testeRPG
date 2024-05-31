@@ -21,7 +21,7 @@ public class UserController {
     }
 
     public boolean addUser(String username) {
-        if (users.containsKey(username)) {
+        if (userExists(username)) {
             return false; // User already exists
         }
         User user = new User(username);
