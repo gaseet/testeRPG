@@ -20,20 +20,25 @@ public class FileView {
         System.out.println("10. Edit existing character sheet");
         System.out.println("11. Delete existing character sheet");
         System.out.println("12. Exit");
+        System.out.print("Enter the number corresponding to your choice: ");
     }
 
     public int getMenuChoice() {
-        printChoices();
         int choice = -1;
-        try {
-            choice = scanner.nextInt();
-        } catch (InputMismatchException e) {
-            e.printStackTrace();
-            System.out.println("Invalid input.");
+        boolean validInput = false;
+        
+        while (!validInput) {
             printChoices();
-            scanner.nextLine(); // Clear the invalid input
+            try {
+                choice = scanner.nextInt();
+                scanner.nextLine(); // Consume the newline character
+                validInput = true; // If no exception, input is valid
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input.");
+                scanner.nextLine(); // Clear the invalid input
+            }
         }
-        scanner.nextLine();  // Consume the newline character
+        
         return choice;
     }
 
@@ -58,6 +63,7 @@ public class FileView {
     public String getFileName(String prompt) {
         System.out.print(prompt);
         String fileName = scanner.nextLine();
+        fileName = fileName.trim();
         fileName = fileName + ".txt";
         return fileName;
     }

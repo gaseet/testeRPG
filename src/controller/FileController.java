@@ -79,8 +79,9 @@ public class FileController {
     }
 
     public void run() {
+        int choice = -1;
         while (true) {
-            int choice = view.getMenuChoice();
+            choice = view.getMenuChoice();
 
             switch (choice) {
                 case 1:
