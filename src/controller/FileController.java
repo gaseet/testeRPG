@@ -28,6 +28,7 @@ public class FileController {
         System.out.println("4. Paladin");
         System.out.println("5. Rogue");
         System.out.println("6. Druid");
+        System.out.println("7. Ranger");
     }
 
     private String getClassFromNumber() {
@@ -48,6 +49,8 @@ public class FileController {
                     return "Rogue";
                 case 6:
                     return "Druid";
+                case 7:
+                    return "Ranger";
                 default:
                     view.displayMessage("Invalid number.");
                     classChoice = -1;

@@ -19,6 +19,7 @@ public class FileModel {
         classes.put("Paladin", new Paladin());
         classes.put("Rogue", new Rogue());
         classes.put("Druid", new Druid());
+        classes.put("Ranger", new Ranger());
         // Add other RPG classes here
 
         races = new HashMap<>();
